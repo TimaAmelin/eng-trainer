@@ -1,0 +1,18 @@
+.App {
+  	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.button {
+    width: 200px;
+
+    margin: 30px 15px;
+    padding: 20px;
+
+    font-size: 20px;
+
+    border: 2px solid aquamarine;
+    border-radius: 30px;
+}
