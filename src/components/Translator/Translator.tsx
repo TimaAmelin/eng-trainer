@@ -5,14 +5,14 @@ import { addDoc, collection } from 'firebase/firestore';
 import './Translator.css'
 import { db } from "../../firebase/firebase";
 
-export const Translator = () => {
+export const Translator = ({wordCollection} : {wordCollection: string}) => {
 	const [value, setValue] = useState<string>('');
 	const [from, setFrom] = useState<string>('');
 	const [to, setTo] = useState<string>('');
 	const [translatedValue, setTranslatedValue] = useState<string>('');
     const [message, setMessage] = useState<string>('');
 
-    const wordsCollectionRef = collection(db, 'words');
+    const wordsCollectionRef = collection(db, wordCollection);
 
     const saveWord = async (word: {en: string, ru: string, memoryCounter: number}) => {
         if (!word.en || !word.ru) {

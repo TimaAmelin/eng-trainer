@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 
 import { db } from "../../firebase/firebase";
 
 import './Trainer.css';
 
-export const Trainer = () => {
+export const Trainer = ({wordCollection} : {wordCollection: string}) => {
 	const [value, setValue] = useState<string>('');
 	const [fromTo, setFromTo] = useState<string>('');
 	const [userValue, setUserValue] = useState<string>('');
@@ -14,7 +14,7 @@ export const Trainer = () => {
     const [word, setWord] = useState<any>({});
     const [message, setMessage] = useState<string>('');
 
-    const wordsCollectionRef = collection(db, 'words');
+    const wordsCollectionRef = collection(db, wordCollection);
 
     const getWords = async () => {
         await getDocs(wordsCollectionRef).then(data => {
@@ -28,7 +28,7 @@ export const Trainer = () => {
     };
 
     const editWord = async (word: {en: any, ru: any, memoryCounter: number, key: string}) => {
-        updateDoc(doc(db, 'words', word.key), {en: word.en.stringValue, ru: word.ru.stringValue, memoryCounter: word.memoryCounter}).then(() => setMessage(word.memoryCounter === 5 ? 'Не расстраивайся, все получится!' : 'Ты умница!'));
+        updateDoc(doc(db, wordCollection, word.key), {en: word.en.stringValue, ru: word.ru.stringValue, memoryCounter: word.memoryCounter}).then(() => setMessage(word.memoryCounter === 5 ? 'Не расстраивайся, все получится!' : 'Ты умница!'));
         setWords(words.map(wrd => wrd.key !== word.key ? wrd : {...wrd, memoryCounter: {integerValue: String(word.memoryCounter)}}));
         chooseWord(words.map(wrd => wrd.key !== word.key ? wrd : {...wrd, memoryCounter: {integerValue: String(word.memoryCounter)}}), fromTo)
     }
